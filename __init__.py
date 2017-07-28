@@ -61,14 +61,15 @@ class SpeakerRecognitionSkill(MycroftSkill):
         #TODO this is where we will start the voice training process
         user = message.data.get("User")
         text = "record_wake_words"   # Search for config variable to change.
-        new_text = "    \"record_wake_words\": true, \n"
+        new_text = "    \"record_wake_words\": true,\n"
         x = fileinput.input(files="/home/joshua/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
         for line in x:
             if text in line:
                 line = new_text
             print line,
         x.close()
-        self.speak("Voice training started for %s" % (user))
+        self.speak("Voice training has been enabled for %s" % (user))
+        self.speak("Use skills normally for a short while then say, end voice training")
 
     def handle_end_voice_training_intent(self, message):
         #TODO this is where we will end the voice training process
@@ -80,7 +81,8 @@ class SpeakerRecognitionSkill(MycroftSkill):
                 line = new_text
             print line,
         x.close()
-        self.speak("Voice training complete")
+        self.speak("Voice training complete, I should now be able to recognize your voice.  \
+            If you feel like I'm not being accurate enough, please enable voice training again")
 
     def handle_speaker_rec_test_intent(self, message):
         speakers = data.get_speakers()
