@@ -60,8 +60,8 @@ class SpeakerRecognitionSkill(MycroftSkill):
     def handle_start_voice_training_intent(self, message):
         #TODO this is where we will start the voice training process
         text = "record_wake_words"   # if any line contains this text, I want to modify the whole line.
-        new_text = "    \"record_wake_words\": true, \n"
-        x = fileinput.input(files="/home/joshua/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
+        new_text = "    \"record_wake_words\": true,\n"
+        x = fileinput.input(files="your mycroft config path goes here", inplace=1)
         for line in x:
             if text in line:
                 line = new_text
@@ -72,8 +72,8 @@ class SpeakerRecognitionSkill(MycroftSkill):
     def handle_end_voice_training_intent(self, message):
         #TODO this is where we will end the voice training process
         text = "record_wake_words"   # if any line contains this text, I want to modify the whole line.
-        new_text = "    \"record_wake_words\": false, \n"
-        x = fileinput.input(files="/home/joshua/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
+        new_text = "    \"record_wake_words\": false,\n"
+        x = fileinput.input(files="your mycroft config path goes here", inplace=1)
         for line in x:
             if text in line:
                 line = new_text
