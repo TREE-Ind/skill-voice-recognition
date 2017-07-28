@@ -22,7 +22,8 @@ from mycroft.util.log import getLogger
 
 import os
 import sys
-
+import re
+import fileinput
 import tflearn
 
 
@@ -58,16 +59,32 @@ class SpeakerRecognitionSkill(MycroftSkill):
 
     def handle_start_voice_training_intent(self, message):
         #TODO this is where we will start the voice training process
+        text = "record_wake_words"   # if any line contains this text, I want to modify the whole line.
+        new_text = "    \"record_wake_words\": true, \n"
+        x = fileinput.input(files="/home/joshua/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
+        for line in x:
+            if text in line:
+                line = new_text
+            print line,
+        x.close()
         self.speak("Voice training started")
 
     def handle_end_voice_training_intent(self, message):
         #TODO this is where we will end the voice training process
-        self.speak("Voice training completed")
+        text = "record_wake_words"   # if any line contains this text, I want to modify the whole line.
+        new_text = "    \"record_wake_words\": false, \n"
+        x = fileinput.input(files="/home/joshua/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
+        for line in x:
+            if text in line:
+                line = new_text
+            print line,
+        x.close()
+        self.speak("Voice training complete")
 
     def handle_speaker_rec_test_intent(self, message):
         speakers = data.get_speakers()
         number_classes=len(speakers)
-        print("speakers",speakers)
+        #print("speakers",speakers)
 
         #batch=data.wave_batch_generator(batch_size=1000, source=data.Source.DIGIT_WAVES, target=data.Target.speaker)
         #X,Y=next(batch)
