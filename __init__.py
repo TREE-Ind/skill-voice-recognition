@@ -62,7 +62,7 @@ class SpeakerRecognitionSkill(MycroftSkill):
         user = message.data.get("User")
         text = "record_wake_words"   # Search for config variable to change.
         new_text = "    \"record_wake_words\": true,\n"
-        x = fileinput.input(files="/home/joshua/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
+        x = fileinput.input(files="~/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
         for line in x:
             if text in line:
                 line = new_text
@@ -75,7 +75,7 @@ class SpeakerRecognitionSkill(MycroftSkill):
         #TODO this is where we will end the voice training process
         text = "record_wake_words"   # if any line contains this text, I want to modify the whole line.
         new_text = "    \"record_wake_words\": false,\n"
-        x = fileinput.input(files="/home/joshua/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
+        x = fileinput.input(files="~/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
         for line in x:
             if text in line:
                 line = new_text
