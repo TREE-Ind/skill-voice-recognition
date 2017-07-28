@@ -50,7 +50,7 @@ class SpeakerRecognitionSkill(MycroftSkill):
         self.register_intent(speaker_rec_test_intent, self.handle_speaker_rec_test_intent)
 
         start_voice_training_intent = IntentBuilder("StartVoiceTrainingIntent"). \
-            require("StartVoiceTrainingKeyword").build()
+            require("StartVoiceTrainingKeyword").require("User").build()
         self.register_intent(start_voice_training_intent, self.handle_start_voice_training_intent)
 
         end_voice_training_intent = IntentBuilder("EndTrainingIntent"). \
@@ -59,21 +59,22 @@ class SpeakerRecognitionSkill(MycroftSkill):
 
     def handle_start_voice_training_intent(self, message):
         #TODO this is where we will start the voice training process
-        text = "record_wake_words"   # if any line contains this text, I want to modify the whole line.
-        new_text = "    \"record_wake_words\": true,\n"
-        x = fileinput.input(files="your mycroft config path goes here", inplace=1)
+        user = message.data.get("User")
+        text = "record_wake_words"   # Search for config variable to change.
+        new_text = "    \"record_wake_words\": true, \n"
+        x = fileinput.input(files="/home/joshua/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
         for line in x:
             if text in line:
                 line = new_text
             print line,
         x.close()
-        self.speak("Voice training started")
+        self.speak("Voice training started for %s" % (user))
 
     def handle_end_voice_training_intent(self, message):
         #TODO this is where we will end the voice training process
         text = "record_wake_words"   # if any line contains this text, I want to modify the whole line.
         new_text = "    \"record_wake_words\": false,\n"
-        x = fileinput.input(files="your mycroft config path goes here", inplace=1)
+        x = fileinput.input(files="/home/joshua/mycroft-core/mycroft/configuration/mycroft.conf", inplace=1)
         for line in x:
             if text in line:
                 line = new_text
